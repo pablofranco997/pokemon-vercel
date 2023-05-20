@@ -6,6 +6,13 @@ import {
   Mesh,
   MeshBasicMaterial,
   BoxGeometry,
+  SphereGeometry,
+  TextureLoader,
+  BackSide,
+  MeshPhongMaterial,
+  DirectionalLight,
+  HemisphereLight,
+  AmbientLight,
 } from 'three';
 
 const HomePage = () => {
@@ -41,6 +48,21 @@ const HomePage = () => {
 
     // Agrega el cubo a la escena
     scene.add(cube);
+
+    //! Skybox
+    const Skygeometry = new SphereGeometry(360, 25, 25);
+    const loader = new TextureLoader();
+    const texture = loader.load('/custom-sky.png');
+
+    const material2 = new MeshPhongMaterial({ map: texture });
+    const skybox = new Mesh(Skygeometry, material2);
+
+    scene.add(skybox);
+    skybox.material.side = BackSide;
+
+    // iluminación skybox
+    scene.add(new AmbientLight(0xffffff, 0.8));
+    scene.add(new HemisphereLight(0xffffff, 0.8));
 
     // Configura el tamaño del renderizador para que coincida con el tamaño de la ventana
     renderer.setSize(window.innerWidth, window.innerHeight);
